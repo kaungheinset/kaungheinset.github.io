@@ -1,0 +1,59 @@
+/* FULL 3D EMBLEM: all shield geometry + glass plate + orbital rings rotate together.
+   Canvas is transparent; original THOMAS_OS dashboard and real HTML remain intact. */
+.holo-viewport {pointer-events:none;isolation:isolate}
+.holo-webgl {
+  position:absolute;inset:0;z-index:3;display:block;width:100%;height:100%;
+  pointer-events:none;outline:0;
+}
+.holo-webgl[hidden]{display:none!important}
+.holo-aura {z-index:1;inset:15% 18%;filter:blur(34px);background:radial-gradient(ellipse at 48% 45%,rgba(56,194,246,.14),rgba(125,92,244,.08) 37%,transparent 67%)}
+.holo-coordinate{z-index:1;opacity:.5}
+/* The old CSS cube and 2D rings are deliberately replaced, rather than rotating
+   one separate piece while leaving the rest as a flat icon. */
+.holo-drag-surface {
+  position:absolute;z-index:8;left:50%;top:51%;width:82%;height:82%;
+  transform:translate(-50%,-50%);border-radius:40%;cursor:grab;
+  touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;
+}
+.holo-drag-surface.is-dragging {cursor:grabbing;}
+.holo-drag-surface:focus-visible {outline:2px dashed var(--neon);outline-offset:-3px;background:rgba(82,228,251,.025)}
+.holo-rotor-bar {
+  position:absolute;z-index:11;left:50%;top:42px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:7px;justify-content:center;
+  white-space:nowrap;pointer-events:auto;font:9px var(--mono);letter-spacing:.045em;
+}
+.holo-rotor-bar__label{display:flex;align-items:center;gap:6px;color:#9ebad4;padding:7px 10px;background:rgba(6,18,40,.78);border:1px solid rgba(101,188,240,.26);border-radius:6px}
+.holo-rotor-bar__label b{color:var(--neon);text-shadow:0 0 13px var(--glow)}
+.holo-rotor-bar__pulse{width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 10px var(--neon)}
+.holo-rotor-bar button{font:inherit;cursor:pointer;color:#d1ebff;white-space:nowrap;min-height:30px;padding:7px 10px;background:rgba(14,29,58,.90);border:1px solid rgba(111,188,245,.35);border-radius:5px;transition:background .2s,border-color .2s}
+.holo-rotor-bar button:hover,.holo-rotor-bar button:focus-visible{border-color:var(--neon);background:rgba(26,65,99,.94)}
+.holo-rotor-bar button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.holo-rotor-bar button[aria-pressed='false']{color:#93a8bd}
+.holo-angle-readout{position:absolute;z-index:9;right:22px;bottom:11%;font:9px var(--mono);letter-spacing:.08em;color:#8ca6c4;pointer-events:none}
+.holo-angle-readout span:not(.holo-angle-readout__sep){color:var(--neon)}
+.holo-angle-readout__sep{margin:0 7px;opacity:.7}
+.holo-hint {position:absolute;z-index:9;bottom:7%;left:50%;transform:translateX(-50%);font:8px var(--mono);letter-spacing:.11em;color:#91a7c6;pointer-events:none;white-space:nowrap;text-align:center}
+.holo-hint span{color:var(--pink)}
+/* Fallback appears only when WebGL cannot initialize. */
+.holo-core-fallback[hidden]{display:none!important}
+.holo-core-fallback{position:absolute;inset:0;z-index:3;display:grid;place-items:center;perspective:820px}
+.holo-fallback-orb{position:relative;width:240px;height:240px;transform-style:preserve-3d;animation:holo-fallback-bob 6s ease-in-out infinite alternate}
+.holo-fallback-orb i{position:absolute;inset:3%;border:2px solid var(--neon);border-radius:50%;transform-style:preserve-3d;box-shadow:0 0 22px var(--glow)}
+.holo-fallback-orb i:nth-child(1){transform:rotateX(62deg) rotateZ(18deg)}
+.holo-fallback-orb i:nth-child(2){border-color:var(--secondary);transform:rotateY(70deg) rotateZ(27deg)}
+.holo-fallback-orb i:nth-child(3){border-color:var(--pink);transform:rotateX(-56deg) rotateY(29deg)}
+.holo-fallback-shield{position:absolute;inset:20%;display:grid;place-items:center;transform:translateZ(26px);filter:drop-shadow(0 0 26px var(--glow))}
+.holo-fallback-shield svg{width:100%;height:100%;color:var(--neon)}
+@keyframes holo-fallback-bob{from{transform:translateY(11px) rotateY(-20deg) rotateX(-10deg)}to{transform:translateY(-10px) rotateY(20deg) rotateX(12deg)}}
+body.pause-motion .holo-fallback-orb{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.holo-fallback-orb{animation:none!important}}
+@media(max-width:620px){
+  .holo-rotor-bar{top:36px;gap:4px;font-size:7px}
+  .holo-rotor-bar__label{padding:7px 6px;gap:4px}
+  .holo-rotor-bar button{min-height:30px;padding:7px 7px}
+  .holo-drag-surface{width:89%;height:73%;top:54%}
+  .holo-angle-readout{font-size:7px;right:12px;bottom:12%}
+  .holo-hint{bottom:7%;font-size:6.4px;letter-spacing:.07em}
+  .holo-node{z-index:9}
+}
+@media(max-width:360px){.holo-rotor-bar{font-size:6.4px;gap:3px}.holo-rotor-bar button{padding:6px 5px}.holo-rotor-bar__label{padding:6px 5px}}
